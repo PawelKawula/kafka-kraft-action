@@ -63,7 +63,7 @@ info "Detected Kafka Version: $KAFKA_VERSION"
 info "Bringing up Kafka environment"
 
 # Use envsubst to replace environment variables in docker-compose.yml and bring up Docker containers
-envsubst < docker-compose.yml | docker compose up
+envsubst < docker-compose.yml | docker compose up -d
 sleep 30
 info "Is it even changing?"
 docker ps
