@@ -20,7 +20,7 @@ runs:
     - name: 🏗 Checkout Kafka kraft repo
       uses: actions/checkout@v4
       with:
-        repository: spicyparrot/kafka-kraft-action
+        repository: PawelKawula/kafka-kraft-action
         path: "kafka"
 
     - name: 🧠 Bring up KRaft Broker
