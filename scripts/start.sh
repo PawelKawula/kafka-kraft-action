@@ -63,8 +63,8 @@ info "Detected Kafka Version: $KAFKA_VERSION"
 info "Bringing up Kafka environment"
 
 # Use envsubst to replace environment variables in docker-compose.yml and bring up Docker containers
-envsubst < docker-compose.yml | docker compose up -d
-sleep 60
+envsubst < docker-compose.yml | docker compose up
+sleep 10
 
 # Log information about connecting to Kafka
 info "Please connect to the following IP_ADDRESS:PORT to access Kafka"
