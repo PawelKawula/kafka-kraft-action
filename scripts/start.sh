@@ -65,7 +65,7 @@ info "Bringing up Kafka environment"
 # Use envsubst to replace environment variables in docker-compose.yml and bring up Docker containers
 envsubst < docker-compose.yml | docker compose up
 sleep 10
-
+docker ps
 # Log information about connecting to Kafka
 info "Please connect to the following IP_ADDRESS:PORT to access Kafka"
 
