@@ -18,6 +18,9 @@ inputs:
     default: 'false'
     required: false
 
+env:
+  SCALA_VERSION: '2.13'
+
 runs:
   using: "composite"
   steps:
@@ -26,6 +29,28 @@ runs:
       with:
         repository: PawelKawula/kafka-kraft-action
         path: "kafka"
+
+
+    - name: Restore cached kafka archive
+      id: kafka-archive-restore
+      uses: actions/cache/restore@v4
+      with:
+        path: |
+          /tmp/kafka_*.tgz
+        key: kafka_${{ inputs.kafka-version }}
+
+    - name: Download kafka archive if not cached
+      if: steps.kafka-archive-restore.outputs.cache-hit != 'true'
+      run: wget -O /tmp/kafka_-${{ env.kafka-version }}.tgz https://archive.apache.org/dist/kafka/${{ env.kafka-version }}/kafka_${{ env.SCALA_VERSION}}-${{ env.kafka-version }}.tgz
+
+    - name: Store cached kafka archive
+      id: kafka-archive-save
+      if: steps.kafka-archive-restore.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        path: |
+          /tmp/kafka_*.tgz
+        key: ${{ steps.kafka-archive-restore.outputs.cache-primary-key }}
 
     - name: 🧠 Bring up KRaft Broker
       working-directory: kafka
