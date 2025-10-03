@@ -13,6 +13,10 @@ inputs:
     description: "A comma separated list of topics with their partition counts - e.g. foobar,10,test,5"
     default: ""
     required: false
+  kafka-cache:
+    description: "Whether to cache kafka archive"
+    default: 'false'
+    required: false
 
 runs:
   using: "composite"

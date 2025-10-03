@@ -4,6 +4,7 @@ ARG KAFKA_VERSION
 ENV KAFKA_VERSION=${KAFKA_VERSION}
 ARG KAFKA_ADVERTISED_LISTENERS
 ENV ADVERTISED_LISTENERS=${KAFKA_ADVERTISED_LISTENERS}
+ENV KAFKA_CACHE=${KAFKA_CACHE}
 
 #ENV KAFKA_VERSION=3.6.1
 ENV SCALA_VERSION=2.13
@@ -18,9 +19,9 @@ LABEL name="kafka" version=${KAFKA_VERSION}
 
 # Install bash
 RUN apk update \
- && apk add openssl \
- && apk add bash \
- && apk add openjdk11 
+  && apk add openssl \
+  && apk add bash \
+  && apk add openjdk11 
 
 # Create a non-root user, setting id to >=10000 to avoid clashing and creating a directory structure
 RUN adduser -D -u 10000 -h /home/kafka-user -s /bin/sh kafka-user
@@ -28,10 +29,10 @@ RUN adduser -D -u 10000 -h /home/kafka-user -s /bin/sh kafka-user
 # Download Kafka + Scala Versions
 # https://downloads.apache.org/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz
 
-RUN if [[ ! -f $KAFKA_ARCHIVE ]]; then wget -O $KAFKA_ARCHIVE https://archive.apache.org/dist/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz \
+RUN if [[ ! -f $KAFKA_ARCHIVE ]] || [[! $KAFKA_CACHE = 'false' ]]; then wget -O $KAFKA_ARCHIVE https://archive.apache.org/dist/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz \
   && tar xfz $KAFKA_ARCHIVE -C /opt \
   && ln -s /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION} ${KAFKA_HOME}; \
- fi
+  fi
 
 # Create a directory for init scripts and kafka logs
 RUN mkdir -p  /opt/kafka/scripts ${KAFKA_LOGS}
