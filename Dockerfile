@@ -31,7 +31,6 @@ RUN adduser -D -u 10000 -h /home/kafka-user -s /bin/sh kafka-user
 RUN if [[ ! -f $KAFKA_ARCHIVE ]]; then wget -O $KAFKA_ARCHIVE https://archive.apache.org/dist/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz \
   && tar xfz $KAFKA_ARCHIVE -C /opt \
   && ln -s /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION} ${KAFKA_HOME} \
-  && rm -rf /tmp/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz; \
  fi
 
 # Create a directory for init scripts and kafka logs
