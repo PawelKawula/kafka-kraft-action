@@ -12,6 +12,7 @@ ENV KAFKA_LOGS=/kafka_logs/
 ENV PATH=${PATH}:${KAFKA_HOME}/bin
 ARG KAFKA_ADVERTISED_LISTENERS
 ENV ADVERTISED_LISTENERS=${KAFKA_ADVERTISED_LISTENERS}
+ENV KAFKA_ARCHIVE=/tmp/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz
 
 LABEL name="kafka" version=${KAFKA_VERSION}
 
@@ -26,9 +27,9 @@ RUN adduser -D -u 10000 -h /home/kafka-user -s /bin/sh kafka-user
 
 # Download Kafka + Scala Versions
 # https://downloads.apache.org/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz
-RUN wget -O /tmp/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz https://archive.apache.org/dist/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz \
- && tar xfz /tmp/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz -C /opt \
- && rm /tmp/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz \
+
+RUN wget -O $KAFKA_ARCHIVE https://archive.apache.org/dist/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz \
+ && tar xfz $KAFKA_ARCHIVE -C /opt \
  && ln -s /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION} ${KAFKA_HOME} \
  && rm -rf /tmp/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz
 
