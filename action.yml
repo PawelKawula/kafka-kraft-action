@@ -40,6 +40,7 @@ runs:
         key: kafka_${{ inputs.kafka-version }}
 
     - name: Download kafka archive if not cached
+      shell: bash
       if: steps.kafka-archive-restore.outputs.cache-hit != 'true'
       run: wget -O /tmp/kafka_-${{ env.kafka-version }}.tgz https://archive.apache.org/dist/kafka/${{ env.kafka-version }}/kafka_${{ env.SCALA_VERSION}}-${{ env.kafka-version }}.tgz
 
