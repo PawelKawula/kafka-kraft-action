@@ -28,24 +28,24 @@ runs:
         path: "kafka"
 
     - name: Restore cached kafka archive
+      working-directory: kafka
       id: kafka-archive-restore
       uses: actions/cache/restore@v4
-      working-directory: kafka
       with:
         path: |
           kafka-*${{ inputs.kafka-version }}.tgz
         key: kafka-${{ inputs.kafka-version }}
 
     - name: Download kafka archive if not cached
+      working-directory: kafka
       shell: bash
       if: steps.kafka-archive-restore.outputs.cache-hit != 'true'
-      working-directory: kafka
       run: wget -O kafka-${{ inputs.kafka-version }}.tgz https://archive.apache.org/dist/kafka/${{ inputs.kafka-version }}/kafka_2.13-${{ inputs.kafka-version }}.tgz
 
     - name: Store cached kafka archive
+      working-directory: kafka
       id: kafka-archive-save
       if: steps.kafka-archive-restore.outputs.cache-hit != 'true'
-      working-directory: kafka
       uses: actions/cache/save@v4
       with:
         path: |
