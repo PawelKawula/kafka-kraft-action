@@ -28,12 +28,12 @@ RUN adduser -D -u 10000 -h /home/kafka-user -s /bin/sh kafka-user
 
 # Download Kafka + Scala Versions
 # https://downloads.apache.org/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz
-COPY ${KAFKA_ARCHIVE} ${KAFKA_ARCHIVE}
+COPY $KAFKA_ARCHIVE $KAFKA_ARCHIVE
 
 RUN tar xfz $KAFKA_ARCHIVE -C /opt \
   && ln -s /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION} ${KAFKA_HOME}
 
-RUN rm -rf ${KAFKA_ARCHIVE}
+RUN rm -rf $KAFKA_ARCHIVE
 
 # Create a directory for init scripts and kafka logs
 RUN mkdir -p  /opt/kafka/scripts ${KAFKA_LOGS}
