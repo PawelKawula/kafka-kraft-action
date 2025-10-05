@@ -13,7 +13,7 @@ ENV KAFKA_LOGS=/kafka_logs/
 ENV PATH=${PATH}:${KAFKA_HOME}/bin
 ARG KAFKA_ADVERTISED_LISTENERS
 ENV ADVERTISED_LISTENERS=${KAFKA_ADVERTISED_LISTENERS}
-ENV KAFKA_ARCHIVE=/opt/kafka-${KAFKA_VERSION}.tgz
+ENV KAFKA_ARCHIVE=kafka-${KAFKA_VERSION}.tgz
 
 LABEL name="kafka" version=${KAFKA_VERSION}
 
@@ -36,7 +36,7 @@ RUN tar xfz $KAFKA_ARCHIVE -C /opt \
 RUN rm -rf $KAFKA_ARCHIVE
 
 # Create a directory for init scripts and kafka logs
-RUN mkdir -p  /opt/kafka/scripts ${KAFKA_LOGS}
+RUN mkdir -p /opt/kafka/scripts ${KAFKA_LOGS}
 
 # Copy kafka-kraft start script
 COPY ./scripts/entrypoint.sh /opt/kafka/scripts
