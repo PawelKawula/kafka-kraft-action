@@ -28,28 +28,27 @@ runs:
         path: "kafka"
 
     - name: Restore cached kafka archive
-      working-directory: kafka
       id: kafka-archive-restore
       uses: actions/cache/restore@v4
       with:
         path: |
-          kafka-*${{ inputs.kafka-version }}.tgz
+          kafka/kafka-*${{ inputs.kafka-version }}.tgz
         key: kafka-${{ inputs.kafka-version }}
 
     - name: Download kafka archive if not cached
-      working-directory: kafka
       shell: bash
       if: steps.kafka-archive-restore.outputs.cache-hit != 'true'
-      run: wget -O kafka-${{ inputs.kafka-version }}.tgz https://archive.apache.org/dist/kafka/${{ inputs.kafka-version }}/kafka_2.13-${{ inputs.kafka-version }}.tgz
+      run: |
+        mkdir -p kafka
+        wget -O kafka/kafka-${{ inputs.kafka-version }}.tgz https://archive.apache.org/dist/kafka/${{ inputs.kafka-version }}/kafka_2.13-${{ inputs.kafka-version }}.tgz
 
     - name: Store cached kafka archive
-      working-directory: kafka
       id: kafka-archive-save
       if: steps.kafka-archive-restore.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
       with:
         path: |
-          kafka-${{ inputs.kafka-version }}.tgz
+          kafka/kafka-${{ inputs.kafka-version }}.tgz
         key: ${{ steps.kafka-archive-restore.outputs.cache-primary-key }}
 
     - name: 🧠 Bring up KRaft Broker
