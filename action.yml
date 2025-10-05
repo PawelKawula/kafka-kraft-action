@@ -15,7 +15,7 @@ inputs:
     required: false
   kafka-cache:
     description: "Whether to cache kafka archive"
-    default: 'false'
+    default: "false"
     required: false
 
 env:
@@ -42,7 +42,7 @@ runs:
     - name: Download kafka archive if not cached
       shell: bash
       if: steps.kafka-archive-restore.outputs.cache-hit != 'true'
-      run: wget -O /tmp/kafka_-${{ inputs.kafka-version }}.tgz https://archive.apache.org/dist/kafka/${{ inputs.kafka-version }}/kafka_${{ env.SCALA_VERSION }}-${{ inputs.kafka-version }}.tgz
+      run: wget -O /tmp/kafka_-${{ inputs.kafka-version }}.tgz https://archive.apache.org/dist/kafka/${{ inputs.kafka-version }}/kafka_$SCALA_VERSION-${{ inputs.kafka-version }}.tgz
 
     - name: Store cached kafka archive
       id: kafka-archive-save
