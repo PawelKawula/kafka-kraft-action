@@ -19,7 +19,7 @@ inputs:
     required: false
 
 env:
-  scala-version: '2.13'
+  SCALA_VERSION: '2.13'
 
 runs:
   using: "composite"
@@ -42,7 +42,7 @@ runs:
     - name: Download kafka archive if not cached
       shell: bash
       if: steps.kafka-archive-restore.outputs.cache-hit != 'true'
-      run: wget -O /tmp/kafka_-${{ inputs.kafka-version }}.tgz https://archive.apache.org/dist/kafka/${{ inputs.kafka-version }}/kafka_${{ env.scala-version }}-${{ inputs.kafka-version }}.tgz
+      run: wget -O /tmp/kafka_-${{ inputs.kafka-version }}.tgz https://archive.apache.org/dist/kafka/${{ inputs.kafka-version }}/kafka_${{ env.SCALA_VERSION }}-${{ inputs.kafka-version }}.tgz
 
     - name: Store cached kafka archive
       id: kafka-archive-save
