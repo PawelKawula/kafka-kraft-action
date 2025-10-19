@@ -29,11 +29,12 @@ runs:
 
     - name: Restore cached kafka archive
       id: kafka-archive-restore
+      if: ${{ inputs.kafka-cache == 'true' }}
       uses: actions/cache/restore@v4
       with:
         path: |
-          kafka/kafka-*${{ inputs.kafka-version }}.tgz
-        key: kafka-cache-${{ inputs.kafka-version }}
+          kafka/kafka-${{ inputs.kafka-version }}.tgz
+        key: kafka-${{ inputs.kafka-version }}
 
     - name: Download kafka archive if not cached
       shell: bash
@@ -44,7 +45,7 @@ runs:
 
     - name: Store cached kafka archive
       id: kafka-archive-save
-      if: steps.kafka-archive-restore.outputs.cache-hit != 'true'
+      if: ${{ (inputs.kafka-cache == 'true') && (steps.kafka-archive-restore.outputs.cache-hit != 'true') }}
       uses: actions/cache/save@v4
       with:
         path: |
