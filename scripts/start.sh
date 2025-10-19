@@ -50,7 +50,6 @@ fi
 
 # Log the detected IP address
 info "Detected Private IP Address: $PRIVATE_IP"
-sleep 10
 
 # Export detected IP as a global variable
 export ADVERTISED_HOSTNAME=$PRIVATE_IP
@@ -64,7 +63,6 @@ info "Bringing up Kafka environment"
 
 # Use envsubst to replace environment variables in docker-compose.yml and bring up Docker containers
 envsubst < docker-compose.yml | docker compose up -d
-sleep 10
 # Log information about connecting to Kafka
 info "Please connect to the following IP_ADDRESS:PORT to access Kafka"
 
