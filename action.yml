@@ -33,7 +33,7 @@ runs:
       with:
         path: |
           kafka/kafka-*${{ inputs.kafka-version }}.tgz
-        key: kafka-${{ inputs.kafka-version }}
+        key: kafka-cache-${{ inputs.kafka-version }}
 
     - name: Download kafka archive if not cached
       shell: bash
