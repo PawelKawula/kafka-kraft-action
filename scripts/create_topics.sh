@@ -39,6 +39,7 @@ if [ -n "$KAFKA_TOPIC_LIST" ]; then
   DOCKER_COMMAND+="\" "
   info "Attempting to create kafka topics ..."
   eval $DOCKER_COMMAND
+  sleep 10
 else
   info "No kafka topics to create."
 fi
