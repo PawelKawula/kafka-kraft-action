@@ -8,6 +8,7 @@ services:
       args:
         KAFKA_VERSION: $KAFKA_VERSION
         KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,EXTERNAL://$ADVERTISED_HOSTNAME:9093
+        KAFKA_CONFLUENT_TOPIC_REPLICATION_FACTOR: 1
     container_name: kafka
     ports:
       - "9092:9092"
