@@ -14,9 +14,15 @@ sed -e "s+^node.id=.*+node.id=$NODE_ID+" \
 -e "s+^listeners=.*+listeners=$LISTENERS+" \
 -e "s+^advertised.listeners=.*+advertised.listeners=$ADVERTISED_LISTENERS+" \
 -e "s+^log.dirs=.*+log.dirs=$LOGS_DIR/$NODE_ID+" \
-/opt/kafka/config/kraft/server.properties > server.properties.updated
+-e "s+^linger.ms=.*+linger.ms=$KAFKA_LINGER_MS+" \
+-e "s+^log.retention.ms=.*+log.retention.ms=$KAFKA_LOG_RETENTION_MS+" \
+-e "s+^offsets.topic.replication.factor=.*+offsets.topic.replication.factor=$KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR+" \
+-e "s+^max.in.flight.requests.per.connection=.*+max.in.flight.requests.per.connection=$KAFKA_MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION+" \
+/opt/kafka/config/kraft/server.properties >server.properties.updated
 
 mv server.properties.updated /opt/kafka/config/kraft/server.properties
+
+cat /opt/kafka/config/kraft/server.properties
 
 CLUSTER_ID=$(kafka-storage.sh random-uuid)
 
