@@ -8,6 +8,13 @@ CONTROLLER_QUORUM_VOTERS="$NODE_ID@localhost:9094"
 # Create a logs directory
 mkdir -p $LOGS_DIR/$NODE_ID
 
+KAFKA_VERSION_MAJOR=$(echo $KAFKA_VERSION | cut -d. -f1)
+if [ "$KAFKA_VERSION_MAJOR" -ge 4 ]; then
+    CONFIG_FOLDER=/opt/kafka/config
+else
+    CONFIG_FOLDER=/opt/kafka/config/kraft
+fi
+
 sed -e "s+^node.id=.*+node.id=$NODE_ID+" \
 -e "s+^controller.quorum.voters=.*+controller.quorum.voters=$CONTROLLER_QUORUM_VOTERS+" \
 -e "s+^listener.security.protocol.map=.*+listener.security.protocol.map=$SECURITY_PROTOCOL_MAP+" \
@@ -18,14 +25,12 @@ sed -e "s+^node.id=.*+node.id=$NODE_ID+" \
 -e "s+^log.retention.ms=.*+log.retention.ms=$KAFKA_LOG_RETENTION_MS+" \
 -e "s+^offsets.topic.replication.factor=.*+offsets.topic.replication.factor=$KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR+" \
 -e "s+^max.in.flight.requests.per.connection=.*+max.in.flight.requests.per.connection=$KAFKA_MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION+" \
-/opt/kafka/config/kraft/server.properties >server.properties.updated
+$CONFIG_FOLDER/server.properties > server.properties.updated
 
-mv server.properties.updated /opt/kafka/config/kraft/server.properties
-
-cat /opt/kafka/config/kraft/server.properties
+mv server.properties.updated $CONFIG_FOLDER/server.properties
 
 CLUSTER_ID=$(kafka-storage.sh random-uuid)
 
-kafka-storage.sh format -t $CLUSTER_ID -c /opt/kafka/config/kraft/server.properties
+kafka-storage.sh format -t $CLUSTER_ID -c $CONFIG_FOLDER/server.properties
 
-exec kafka-server-start.sh /opt/kafka/config/kraft/server.properties
+exec kafka-server-start.sh $CONFIG_FOLDER/server.properties
