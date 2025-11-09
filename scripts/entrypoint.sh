@@ -31,6 +31,11 @@ mv server.properties.updated $CONFIG_FOLDER/server.properties
 
 CLUSTER_ID=$(kafka-storage.sh random-uuid)
 
-kafka-storage.sh format -t $CLUSTER_ID -c $CONFIG_FOLDER/server.properties
+if [ "$KAFKA_VERSION_MAJOR" -ge 4 ]; then
+    kafka-storage.sh format -t $CLUSTER_ID -c $CONFIG_FOLDER/server.properties --standalone
+else
+    kafka-storage.sh format -t $CLUSTER_ID -c $CONFIG_FOLDER/server.properties
+fi
+
 
 exec kafka-server-start.sh $CONFIG_FOLDER/server.properties
