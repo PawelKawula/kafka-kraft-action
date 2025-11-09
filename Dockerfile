@@ -23,7 +23,7 @@ LABEL name="kafka" version=${KAFKA_VERSION}
 RUN apk update \
   && apk add openssl \
   && apk add bash \
-  && apk add openjdk11 
+  && apk add openjdk21
 
 # Create a non-root user, setting id to >=10000 to avoid clashing and creating a directory structure
 RUN adduser -D -u 10000 -h /home/kafka-user -s /bin/sh kafka-user
